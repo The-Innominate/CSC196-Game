@@ -3,3 +3,8 @@
 #include "fileIO.h"
 #include "Memory.h"
 #include "Time.h"
+#include "Core/Vector2.h"
+#include "Input/InputSystem.h"
+#include "Transform.h"
+#include "MathUTILS.h"
+#include "Audio/AudioSystem.h"

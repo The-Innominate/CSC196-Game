@@ -172,15 +172,32 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Pew.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Engine\Audio\Audio.vcxproj">
+      <Project>{5fdc2c42-90f4-41c3-a39e-24eb7fdc677f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Engine\Core\Core.vcxproj">
       <Project>{c3edf501-e478-4bfb-8c74-75f86caa7529}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\Framework\Framework.vcxproj">
+      <Project>{c394d46d-ba0f-4d0a-ba53-b0a537f31913}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Engine\Input\Input.vcxproj">
+      <Project>{c9d66926-40a0-476f-af79-363e2b0ee83c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Engine\Render\Render.vcxproj">
       <Project>{2be129fb-064b-4c08-9248-4faf19632ea1}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Pew.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

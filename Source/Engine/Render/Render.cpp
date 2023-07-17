@@ -2,12 +2,12 @@
 
 namespace kda
 {
+	Renderer g_renderer;
+
 	bool Renderer::Initialize()
 	{
 		SDL_Init(SDL_INIT_VIDEO);
-
-
-		return false;
+		return true;
 	}
 
 	void Renderer::Shutdown(){
