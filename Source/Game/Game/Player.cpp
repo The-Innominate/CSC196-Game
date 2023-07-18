@@ -20,8 +20,8 @@ void Player::Update(float dt){
 	//fire weapon
 	if (kda::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kda::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
 		kda::Transform transform{m_transform.position, m_transform.rotation, 1};
-		Pew* pew = new Pew{ 400, m_transform, m_model };
-		m_scene->Add(pew);
+		std::unique_ptr<Pew> pew = std::make_unique<Pew>( 400.0f, m_transform, m_model );
+		m_scene->Add(std::move(pew));
 	}
 }
 

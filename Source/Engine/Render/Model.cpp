@@ -8,10 +8,15 @@ namespace kda {
 
 		std::istringstream stream(buffer);
 
+		//read color
+		stream >> m_color;
+
+		//read number of points
 		std::string line;
 		std::getline(stream, line);
-
 		int numPoints = std::stoi(line);
+
+		//read vector2 points
 		for (int i = 0; i < numPoints; i++){
 			vec2 point;
 
@@ -26,6 +31,7 @@ namespace kda {
 	void Model::Draw(Renderer& renderer, const vec2& position, float scale, float rotation) {
 		if (m_points.empty()) return;
 
+		renderer.SetColor(Color::ToInt(m_color.r), Color::ToInt(m_color.g), Color::ToInt(m_color.b), Color::ToInt(m_color.a));
 		for (int i = 0; i < m_points.size() - 1; i++) {
 			vec2 p1 = (m_points[i] * scale).Rotate(rotation) + position;
 			vec2 p2 = (m_points[i + 1] * scale).Rotate(rotation) + position;

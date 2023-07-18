@@ -9,6 +9,7 @@
 #include <chrono>
 #include <thread>
 #include <vector>
+#include <memory>
 using namespace std;
 
 class Star {
@@ -30,8 +31,12 @@ public:
 };
 
 int main(int argc, char* argv[]) {
+	{
+		//std::unique_ptr<int> up = std::make_unique<int>(10);
+	}
+	
 
-
+	kda::g_memoryTracker.DisplayInfo();
 
 	kda::seedRandom((unsigned int)time(nullptr));
 	kda::setFilePath("Assets");
@@ -67,11 +72,12 @@ int main(int argc, char* argv[]) {
 	float turnRate = kda::DegreesToRadians(180);
 
 	kda::Scene scene;
-	scene.Add(new Player{ 200, kda::pi, {{400, 300}, 20, 3}, model });
-	for (int i = 0; i < 1000; i++)
+	unique_ptr<Player> player = make_unique<Player>(200.0f, kda::pi, kda::Transform{ {400, 300}, 20, 3 }, model);
+	scene.Add(std::move(player));
+	for (int i = 0; i < 10; i++)
 	{
-		Enemy* enemy = new Enemy{ 300, kda::pi, {{400, 300}, 6, kda::randomf(kda::pi2)}, model };
-		scene.Add(enemy);
+		unique_ptr<Enemy> enemy = make_unique<Enemy>(200.0f, kda::pi, kda::Transform{ {400, 300}, 20, 6 }, model);
+		scene.Add(std::move(enemy));
 	}
 
 	// Main game loop
@@ -126,11 +132,45 @@ int main(int argc, char* argv[]) {
 		kda::g_renderer.EndFrame();
 	}
 
+	scene.RemoveAll();
+	stars.clear();
+	kda::g_memoryTracker.DisplayInfo();
+
 	return 0;
 
+}
 
 
-	/*kda::CreateWindow("CSC196", 800, 600);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*kda::CreateWindow("CSC196", 800, 600);
 	cin.get();*/ // pause
 
 	/*kda::g_memoryTracker.DisplayInfo();
@@ -165,4 +205,3 @@ int main(int argc, char* argv[]) {
 	{
 	cout << kda::random(69,69) << endl;
 	}*/
-}
