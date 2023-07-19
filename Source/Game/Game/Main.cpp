@@ -34,10 +34,8 @@ int main(int argc, char* argv[]) {
 	{
 		//std::unique_ptr<int> up = std::make_unique<int>(10);
 	}
-	
 
-	kda::g_memoryTracker.DisplayInfo();
-
+	kda::MemoryTracker::Initialize();
 	kda::seedRandom((unsigned int)time(nullptr));
 	kda::setFilePath("Assets");
 
@@ -76,7 +74,7 @@ int main(int argc, char* argv[]) {
 	scene.Add(std::move(player));
 	for (int i = 0; i < 10; i++)
 	{
-		unique_ptr<Enemy> enemy = make_unique<Enemy>(200.0f, kda::pi, kda::Transform{ {400, 300}, 20, 6 }, model);
+		unique_ptr<Enemy> enemy = make_unique<Enemy>(kda::randomf(75.0f, 150.0f), kda::pi, kda::Transform{ {400, 300}, 20, 6 }, model);
 		scene.Add(std::move(enemy));
 	}
 
@@ -134,7 +132,7 @@ int main(int argc, char* argv[]) {
 
 	scene.RemoveAll();
 	stars.clear();
-	kda::g_memoryTracker.DisplayInfo();
+	kda::MemoryTracker::DisplayInfo();
 
 	return 0;
 

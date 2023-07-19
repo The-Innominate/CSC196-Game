@@ -6,7 +6,9 @@ public:
 	Pew(float speed, const kda::Transform& transform, const kda::Model& model) :
 		Actor{ transform, model },
 		m_speed{ speed }
-	{}
+	{
+		m_lifespan = 2.0f;
+	}
 
 	void Update(float dt) override;
 

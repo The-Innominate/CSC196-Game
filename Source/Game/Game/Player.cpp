@@ -4,6 +4,8 @@
 #include "Pew.h"
 
 void Player::Update(float dt){
+	Actor::Update(dt);
+
 	float rotate = 0;
 	if (kda::g_inputSystem.GetKeyDown(SDL_SCANCODE_LEFT)) rotate = -1;
 	if (kda::g_inputSystem.GetKeyDown(SDL_SCANCODE_RIGHT)) rotate = 1;

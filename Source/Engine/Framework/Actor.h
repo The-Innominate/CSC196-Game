@@ -11,14 +11,18 @@ namespace kda {
 				m_model{ model }
 			{}
 
-			virtual void Update(float dt) = 0;
+			virtual void Update(float dt);
 			virtual void Draw(kda::Renderer& renderer);
 
 			friend class Scene;
 			class kda::Scene* m_scene = nullptr;
 
-		protected:
 			kda::Transform m_transform;
+
+		protected:
+			bool m_destroyed = false;
+			float m_lifespan = -1.0f;
+
 			kda::Model m_model;
 	};
 }
