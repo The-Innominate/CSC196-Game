@@ -8,3 +8,9 @@ void Pew::Update(float dt){
 	m_transform.position.x = kda::wrap(m_transform.position.x, (float)kda::g_renderer.GetWidth());
 	m_transform.position.y = kda::wrap(m_transform.position.y, (float)kda::g_renderer.GetHeight());
 }
+
+void Pew::onCollision(Actor* actor){
+	if (actor->m_tag != m_tag) {
+		m_destroyed = true;
+	}
+}

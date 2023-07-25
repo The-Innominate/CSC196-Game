@@ -3,7 +3,7 @@
 
 class Enemy : public kda::Actor {
 public:
-	Enemy(float speed, float turnRate, const kda::Transform& transform, const kda::Model& model) :
+	Enemy(float speed, float turnRate, const kda::Transform& transform, std::shared_ptr<kda::Model> model) :
 		Actor{ transform, model },
 		m_speed{ speed },
 		m_turnRate{ turnRate }
@@ -13,6 +13,7 @@ public:
 	}
 
 	void Update(float dt) override;
+	void onCollision(Actor* actor) override;
 
 private:
 	float m_speed = 0;
@@ -20,4 +21,5 @@ private:
 
 	float m_fireTime = 0;
 	float m_fireRate = 0;
+	int hp = 100;
 };

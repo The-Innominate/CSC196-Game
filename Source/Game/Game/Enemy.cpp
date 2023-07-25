@@ -23,9 +23,20 @@ void Enemy::Update(float dt) {
 	if (m_fireRate <= 0) {
 		kda::Transform transform{m_transform.position, m_transform.rotation, 1};
 		std::unique_ptr<Pew> pew = std::make_unique<Pew>(400.0f, m_transform, m_model);
+		pew->m_tag = "Enemy";
 		m_scene->Add(std::move(pew));
 
 		m_fireRate = m_fireTime;
 	}
 	
+}
+
+void Enemy::onCollision(Actor* actor){
+	//Player* p = dynamic_cast<Player*>(actor)
+	if (actor->m_tag == "Player") {
+		hp -= 5;
+	}
+	if (hp <= 0) {
+		m_destroyed = true;
+	}
 }

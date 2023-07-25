@@ -3,7 +3,7 @@
 
 class Pew : public kda::Actor {
 public:
-	Pew(float speed, const kda::Transform& transform, const kda::Model& model) :
+	Pew(float speed, const kda::Transform& transform, std::shared_ptr<kda::Model> model) :
 		Actor{ transform, model },
 		m_speed{ speed }
 	{
@@ -11,6 +11,7 @@ public:
 	}
 
 	void Update(float dt) override;
+	void onCollision(Actor* actor) override;
 
 private:
 	float m_speed = 0;

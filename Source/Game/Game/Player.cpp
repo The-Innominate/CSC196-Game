@@ -23,7 +23,16 @@ void Player::Update(float dt){
 	if (kda::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kda::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
 		kda::Transform transform{m_transform.position, m_transform.rotation, 1};
 		std::unique_ptr<Pew> pew = std::make_unique<Pew>( 400.0f, m_transform, m_model );
+		pew->m_tag = "Player";
 		m_scene->Add(std::move(pew));
 	}
 }
 
+void Player::onCollision(Actor* actor){
+	if (actor->m_tag == "EnemyBullet") {
+		hp -= 5;
+	}
+	if (hp <= 0) {
+		m_destroyed = true;
+	}
+}

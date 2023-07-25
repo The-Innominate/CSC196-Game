@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Render/Render.h"
-#include "Render/Model.h"
+#include "Render/ModelManager.h"
 #include "Core/Core.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -47,10 +47,12 @@ int main(int argc, char* argv[]) {
 
 	kda::g_inputSystem.Initialize();
 
-	//std::vector<kda::vec2> points{{ -10, 5 }, { 10, 5 }, { 0, -5 }, { -10, 5 }};
+	std::shared_ptr<kda::Font> font = std::make_shared<kda::Font>("MetalRocker.ttf", 24);
 
-	kda::Model model;
-	model.load("ship.txt");
+	std::unique_ptr<kda::Text> text = std::make_unique<kda::Text>(font);
+	text->Create(kda::g_renderer, "I HOPE THIS WORKED", kda::Color{ 1, 1, 1, 1 });
+
+	//std::vector<kda::vec2> points{{ -10, 5 }, { 10, 5 }, { 0, -5 }, { -10, 5 }};
 
 	kda::vec2 v{5, 5};
 	v.Normalize();
@@ -70,11 +72,14 @@ int main(int argc, char* argv[]) {
 	float turnRate = kda::DegreesToRadians(180);
 
 	kda::Scene scene;
-	unique_ptr<Player> player = make_unique<Player>(200.0f, kda::pi, kda::Transform{ {400, 300}, 20, 3 }, model);
+	unique_ptr<Player> player = make_unique<Player>(200.0f, kda::pi, kda::Transform{ {400, 300}, 20, 3 }, kda::g_modelManager.get("ship.txt"));
+	player->m_tag = "Player";
 	scene.Add(std::move(player));
+
 	for (int i = 0; i < 10; i++)
 	{
-		unique_ptr<Enemy> enemy = make_unique<Enemy>(kda::randomf(75.0f, 150.0f), kda::pi, kda::Transform{ {400, 300}, 20, 6 }, model);
+		unique_ptr<Enemy> enemy = make_unique<Enemy>(kda::randomf(75.0f, 150.0f), kda::pi, kda::Transform{ {400, 300}, 20, 6 }, kda::g_modelManager.get("ship.txt"));
+		enemy->m_tag = "Enemy";
 		scene.Add(std::move(enemy));
 	}
 
@@ -125,6 +130,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		scene.Draw(kda::g_renderer);
+		text->Draw(kda::g_renderer, 400, 300);
 		//model.Draw(kda::g_renderer, transform.position, transform.scale, transform.rotation);
 		
 		kda::g_renderer.EndFrame();

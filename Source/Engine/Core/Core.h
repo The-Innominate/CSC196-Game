@@ -9,3 +9,5 @@
 #include "MathUTILS.h"
 #include "Audio/AudioSystem.h"
 #include "Color.h"
+#include "Render/Font.h"
+#include "Render/Text.h"

@@ -24,7 +24,6 @@ namespace kda {
 
 			m_points.push_back(point);
 		}
-
 		return true;
 	}
 
@@ -41,5 +40,16 @@ namespace kda {
 	}
 	void Model::Draw(Renderer& renderer, const Transform& transform){
 		Draw(renderer, transform.position, transform.scale, transform.rotation);
+	}
+
+	float Model::getRadius() {
+		if (m_radius) return m_radius;
+
+		for (auto point : m_points) {
+			float length = point.length();
+			m_radius = max(m_radius, length);
+		}
+
+		return m_radius;
 	}
 }
