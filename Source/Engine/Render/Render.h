@@ -3,8 +3,7 @@
 #include <string>
 #include <../ThirdParty/SDL2-2.28.0/include/SDL.h>
 
-namespace kda
-{
+namespace kda {
 	class Renderer {
 		public: 
 			Renderer() = default;

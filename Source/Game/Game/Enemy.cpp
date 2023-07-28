@@ -1,8 +1,11 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Pew.h"
+#include "SpaceGame.h"
 #include "./Framework/Scene.h"
 #include "Render/Renderer.h"
+#include "Render/ModelManager.h"
+#include <Framework/Emitter.h>
 
 void Enemy::Update(float dt) {
 
@@ -21,8 +24,8 @@ void Enemy::Update(float dt) {
 
 	m_fireRate -= dt;
 	if (m_fireRate <= 0) {
-		kda::Transform transform{m_transform.position, m_transform.rotation, 1};
-		std::unique_ptr<Pew> pew = std::make_unique<Pew>(400.0f, m_transform, m_model);
+		kda::Transform transform1{m_transform.position, m_transform.rotation, 1};
+		std::unique_ptr<Pew> pew = std::make_unique<Pew>(400.0f, transform1, kda::g_modelManager.get("EnemyBullet.txt"));
 		pew->m_tag = "Enemy";
 		m_scene->Add(std::move(pew));
 
@@ -37,6 +40,24 @@ void Enemy::onCollision(Actor* actor){
 		hp -= 5;
 	}
 	if (hp <= 0) {
+		m_game->AddPoint(100);
 		m_destroyed = true;
+
+		kda::EmitterData data;
+		data.burst = true;
+		data.burstCount = 100;
+		data.spawnRate = 200;
+		data.angle = 0;
+		data.angleRange = kda::pi;
+		data.lifetimeMin = 0.5f;
+		data.lifetimeMax = 1.5f;
+		data.speedMin = 50;
+		data.speedMax = 250;
+		data.damping = 0.5f;
+		data.color = kda::Color{ 1, 0, 0, 1 };
+		kda::Transform transform{ { m_transform.position }, 0, 1 };
+		auto emitter = std::make_unique<kda::Emitter>(transform, data);
+		emitter->m_lifespan = 1.0f;
+		m_scene->Add(std::move(emitter));
 	}
 }

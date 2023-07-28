@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <utility>
 
 namespace kda {
 	const float pi = 3.14159265358979323f;
@@ -31,5 +32,11 @@ namespace kda {
 	inline T Clamp(T value, T min, T max) {
 		if (min > max) std::swap(min, max);
 		return (value < min) ? min : (value > max) ? max : value;
+	}
+
+	template<typename T>
+	constexpr T Lerp(const T& a, const T& b, float t)
+	{
+		return (a * (1.0f - t)) + (b * t);
 	}
 }

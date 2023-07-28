@@ -5,11 +5,16 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Framework/Scene.h"
+#include "SpaceGame.h"
 #include "../../Engine/Core/Vector2.h"
 #include <chrono>
 #include <thread>
 #include <vector>
 #include <memory>
+#include "Render/ParticleSystem.h"
+#include "Render/Particle.h"
+#include "Framework/Emitter.h"
+
 using namespace std;
 
 class Star {
@@ -41,18 +46,14 @@ int main(int argc, char* argv[]) {
 
 
 	kda::g_audioSystem.Initialize();
-	kda::g_audioSystem.AddAudio("hit", "Laser_Shoot.wav");
+	
 	kda::g_renderer.Initialize();
 	kda::g_renderer.CreateWindow("CSC196", 800, 600);
 
 	kda::g_inputSystem.Initialize();
 
-	std::shared_ptr<kda::Font> font = std::make_shared<kda::Font>("MetalRocker.ttf", 24);
-
-	std::unique_ptr<kda::Text> text = std::make_unique<kda::Text>(font);
-	text->Create(kda::g_renderer, "I HOPE THIS WORKED", kda::Color{ 1, 1, 1, 1 });
-
-	//std::vector<kda::vec2> points{{ -10, 5 }, { 10, 5 }, { 0, -5 }, { -10, 5 }};
+	unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
+	game->Initialize();
 
 	kda::vec2 v{5, 5};
 	v.Normalize();
@@ -71,18 +72,6 @@ int main(int argc, char* argv[]) {
 	float speed = 200;
 	float turnRate = kda::DegreesToRadians(180);
 
-	kda::Scene scene;
-	unique_ptr<Player> player = make_unique<Player>(200.0f, kda::pi, kda::Transform{ {400, 300}, 20, 3 }, kda::g_modelManager.get("ship.txt"));
-	player->m_tag = "Player";
-	scene.Add(std::move(player));
-
-	for (int i = 0; i < 10; i++)
-	{
-		unique_ptr<Enemy> enemy = make_unique<Enemy>(kda::randomf(75.0f, 150.0f), kda::pi, kda::Transform{ {400, 300}, 20, 6 }, kda::g_modelManager.get("ship.txt"));
-		enemy->m_tag = "Enemy";
-		scene.Add(std::move(enemy));
-	}
-
 	// Main game loop
 	bool quit = false;
 	while (!quit) {
@@ -90,23 +79,16 @@ int main(int argc, char* argv[]) {
 		kda::g_audioSystem.Update();
 		kda::g_time.tick();
 		kda::g_inputSystem.Update();
+		kda::g_particleSystem.Update(kda::g_time.getDeltaTime());
 		if (kda::g_inputSystem.GetKeyDown(SDL_SCANCODE_ESCAPE)) {
 			quit = true;
 		}if (kda::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE)){
 			kda::g_audioSystem.PlayOneShot("hit");
 		}
 
-		scene.Update(kda::g_time.getDeltaTime());
+		//Update Game
+		game->Update(kda::g_time.getDeltaTime());
 
-		/*kda::vec2 direction;
-		if (inputSystem.GetKeyDown(SDL_SCANCODE_UP)) direction.y = -1;
-		if (inputSystem.GetKeyDown(SDL_SCANCODE_LEFT)) direction.x = -1;
-		if (inputSystem.GetKeyDown(SDL_SCANCODE_DOWN)) direction.y = 1;
-		if (inputSystem.GetKeyDown(SDL_SCANCODE_RIGHT)) direction.x = 1;*/
-
-		//position += direction * speed * kda::g_time.getDeltaTime();
-
-		//cout << inputSystem.GetMousePosition().x << " " << inputSystem.GetMousePosition().y << endl;
 		if (kda::g_inputSystem.GetMouseButtonDown(0)) {
 			cout << "Mouse Pressed value: left" << endl;
 		}else if (kda::g_inputSystem.GetMouseButtonDown(1)) {
@@ -129,16 +111,16 @@ int main(int argc, char* argv[]) {
 
 		}
 
-		scene.Draw(kda::g_renderer);
-		text->Draw(kda::g_renderer, 400, 300);
+		kda::g_particleSystem.Draw(kda::g_renderer);
+		game->Draw(kda::g_renderer);
 		//model.Draw(kda::g_renderer, transform.position, transform.scale, transform.rotation);
 		
 		kda::g_renderer.EndFrame();
 	}
 
-	scene.RemoveAll();
+
 	stars.clear();
-	kda::MemoryTracker::DisplayInfo();
+
 
 	return 0;
 

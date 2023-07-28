@@ -19,7 +19,7 @@ private:
 	float m_speed = 0;
 	float m_turnRate = 0;
 
-	float m_fireTime = 0;
+	float m_fireTime = 3.0f;
 	float m_fireRate = 0;
-	int hp = 100;
+	int hp = 10;
 };

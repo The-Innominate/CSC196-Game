@@ -25,11 +25,15 @@ namespace kda
 		float GetElapsedSeconds();
 
 		float getTime() const { return m_time; };
-		float getDeltaTime() const { return m_deltaTime; };
+		float getDeltaTime() const { return m_deltaTime * m_timeScale; };
+		float getUnscaledDeltaTime() const { return m_deltaTime; };
 
+		float getTimeScale() const { return m_timeScale; };
+		void setTimeScale(float timeScale) { m_timeScale = timeScale; }
 	private:
-		float m_time;
-		float m_deltaTime;
+		float m_time = 0;
+		float m_deltaTime = 0;
+		float m_timeScale = 1;
 
 		clock::time_point m_startTime;
 		clock::time_point m_frameTime;

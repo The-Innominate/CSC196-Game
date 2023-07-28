@@ -17,7 +17,7 @@ void kda::Scene::Update(float dt){
 		for (auto iter2 = std::next(iter1, 1); iter2 != m_actors.end(); iter2++) {
 
 			float distance = (*iter1)->m_transform.position.distance((*iter2)->m_transform.position);
-			float radius = (*iter1)->getRadius() + (*iter2)->getRadius();
+			float radius = (*iter1)->GetRadius() + (*iter2)->GetRadius();
 
 			if (distance <= radius) {
 				(*iter1)->onCollision(iter2->get());

@@ -11,6 +11,7 @@ void Pew::Update(float dt){
 
 void Pew::onCollision(Actor* actor){
 	if (actor->m_tag != m_tag) {
+		m_lifespan = 0;
 		m_destroyed = true;
 	}
 }
